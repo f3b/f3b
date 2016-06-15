@@ -6,6 +6,8 @@ message MatProperty{
   optional Color color = 2; 
   optional Texture texture = 3; 
   optional double value = 4;
+  optional Vec2 vec2 = 5;
+  optional Vec3 vec3 = 6;
 }
 
 message Material {
