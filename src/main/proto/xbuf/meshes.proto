@@ -45,7 +45,14 @@ message VertexArray {
     position = 1;
     normal = 2;
     tangent = 3;
-    bitangent = 4;
+    tangent2 = 15;
+    tangent3 = 16;
+    tangent4 = 17;
+    tangent5 = 18;
+    tangent6 = 19;
+    tangent7 = 20;
+    tangent8 = 21;
+    tangent9 = 22;
     color = 5;
     texcoord = 6;
     texcoord2 = 7;
