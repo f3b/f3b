@@ -5,14 +5,16 @@ os:
 - linux
 notifications:
   email: true
-jdk:
-  - oraclejdk7
 before_install:
-- sudo apt-get -qq update
-- sudo apt-get install -y wget unzip build-essential
+- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq update ;fi
+- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y curl zip wget build-essential;fi
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then  brew update  ;fi
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then  brew tap caskroom/cask ; fi
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then  brew install brew-cask ; fi
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then  brew cask install java ; fi
 script:
 - ./make.sh travis
 env:
   global:
   - BINTRAY_USER: riccardo
-  - secure: "NOPE"
+  - secure: "KbD00rlTK8lsQCdw7DaGnA+16rQUCfwwhH4Yf0q+GoyDfIg81Dh43CtK/KDKRQe2bXwcNMcMKDx/H8jnVYjnEW/SYfGMxCwUBEHCewWBU/AoFTZoER/Yx3PALSyQ0rt4gViRx8VHJ75PfjcpJ8X7M/N+6Cbv+tpGIiXMJkz1+XPHnzhFvkkXUGkWby0beG6/9rbGVK/O/GGNdkRVoEy6yeLRl+vOmM+rvubvsBoNUwdaviLr3e4jWdOhFdXGMzyTPBtPkpQhp+AyJl6tHTwuENlv1JQyuIK2CDJMBcG5j0P2PgZJ39ZrxK+fl/+OKqlgXloGR3acDurhEX2ay2/GbcAEj1Xp7Ohm4YA7F2B7Efw25CEWaqSvTvQnk1VAnhSax48cQFP9nzUgQqZIi6zSgLi5JWWbwkjjRjkxd9FK1oWL3E5jkllAQGk7U3qiXOZEJYnv88mg4kNx5d38RMlH3iX0Z56b9DB+BOFzpFE55k8D8ydX3u5EDMslNyjfDqb9NTEDD0GK3YtFcAtawMQgEaGg5bdXh0uzkGr+DMdshu68KK/Dv4tbKFRshG5i42hdCdD8BofNCxS2DGYDGQT3dAiXsmDHErv5YJuOO4sJ4kZzWPqCp/pTVMuIaZ4L3bY9NOPFY391mCKDlUDeBMyMGoybVPDGxSFeoM0D57rNItY="

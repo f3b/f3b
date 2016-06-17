@@ -35,9 +35,15 @@ function compile {
         rm -Rf protobuf.tar.gz
         cd *
         clr_green "Compile protoc..."
-        ./configure          
-        checkErrors
-        make
+        if [ "$1" = "osx" ]; then
+            ./configure CC=clang CXX=clang++ CXXFLAGS='-std=c++11 -stdlib=libc++ -O3 -g' LDFLAGS='-stdlib=libc++' LIBS="-lc++ -lc++abi"
+            checkErrors
+            make -j 4 
+        else
+            ./configure          
+            checkErrors
+            make -j 4 
+        fi
         checkErrors
         cp src/protoc ../../../
         cd ../../../
@@ -123,13 +129,13 @@ function deployToRemote {
 function travis {
     DEPLOY="false"
     VERSION=$TRAVIS_COMMIT
-    if [ "$TRAVIS_TAG" != "" ];
+    if [ "$TRAVIS_TAG" != "" -a "$TRAVIS_OS_NAME" = "linux" ];
     then
         echo "Deploy for $TRAVIS_TAG."
         VERSION=$TRAVIS_TAG
         DEPLOY="true"    
     fi
-    compile
+    compile $TRAVIS_OS_NAME
     assemble
     if [ "$DEPLOY" != "true" ];
     then
