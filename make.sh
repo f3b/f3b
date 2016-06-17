@@ -121,15 +121,18 @@ function deployToLocal {
 }
 
 function deployToRemote {
-    for f in build/release/*
+    cd build/release
+    for f in *
     do
         target_dir=${GROUP//./\/}
         curl -X PUT  -T  $f -u$BINTRAY_USER:$BINTRAY_API_KEY\
-            "https://api.bintray.com/content/riccardo/f3b/f3b/$VERSION/$target_dir/$VERSION/?publish=1&override=1"
+            "https://api.bintray.com/content/riccardo/f3b/f3b/$VERSION/$target_dir/$f?publish=1&override=1"
     done
+    cd ../../
     echo $VERSION > build/tmp/version.txt
-    curl -X PUT  -T  build/tmp/version.txt -u$BINTRAY_USER:$BINTRAY_API_KEY\
-            "https://api.bintray.com/content/riccardo/f3b/f3b/latest/$target_dir/latest/?publish=1&override=1"
+    curl -X PUT  -T  version.txt -u$BINTRAY_USER:$BINTRAY_API_KEY \
+           "https://api.bintray.com/content/riccardo/f3b/f3b/latest/$target_dir/version.txt?publish=1&override=1"
+
 }
 
 function travis {
