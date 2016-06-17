@@ -1,11 +1,18 @@
-sudo: false
+sudo: required
+dist: trusty
 language: java
-env:
-  - GRADLE_USER_HOME=gradle-cache
-cache:
-  directories:
-    - gradle-cache
+os:
+- linux
+notifications:
+  email: true
 jdk:
   - oraclejdk7
-after_success:
-  - '[ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && ./gradlew bintrayUpload || :'
+before_install:
+- sudo apt-get -qq update
+- sudo apt-get install -y wget unzip build-essential
+script:
+- ./make.sh travis
+env:
+  global:
+  - BINTRAY_USER: riccardo
+  - secure: "NOPE"

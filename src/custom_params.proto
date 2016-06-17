@@ -1,0 +1,26 @@
+package f3d;
+//option optimize_for = LITE_RUNTIME;
+
+import public "primitives.proto";
+
+message CustomParamList {
+  required string id = 1;
+  repeated CustomParam params = 2;
+}
+
+message CustomParam {
+  required string name = 1;
+  oneof value {
+    bool vbool = 2;
+    string vstring = 3;
+    float vfloat = 4;
+    int32 vint = 5;
+    Vec2 vvec2 = 10;
+    Vec3 vvec3 = 11;
+    Vec4 vvec4 = 12;
+    Quaternion vquat = 13;
+    Mat4 vmat4 = 14;
+    Texture vtexture = 15;
+    Color vcolor = 16;
+  }
+}
