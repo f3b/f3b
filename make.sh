@@ -130,7 +130,7 @@ function deployToRemote {
     done
     cd ../../
     echo $VERSION > build/tmp/version.txt
-    curl -X PUT  -T  version.txt -u$BINTRAY_USER:$BINTRAY_API_KEY \
+    curl -X PUT  -T  build/tmp/version.txt -u$BINTRAY_USER:$BINTRAY_API_KEY \
            "https://api.bintray.com/content/riccardo/f3b/f3b/latest/$target_dir/version.txt?publish=1&override=1"
 
 }
