@@ -1,4 +1,4 @@
-package f3d;
+package f3b;
 /// Define a Relation (edge, link) between two objects with an id
 /// rules:
 /// * typename of obj with id == ref1 < typename of obj with id == ref2

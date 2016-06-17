@@ -1,4 +1,4 @@
-package f3d;
+package f3b;
 //option optimize_for = LITE_RUNTIME;
 
 import public "lights.proto";

@@ -1,8 +1,8 @@
 #/bin/bash
 
 ### Configuration ###
-GROUP="wf.frk.f3d"
-NAME="f3d"
+GROUP="wf.frk.f3b"
+NAME="f3b"
 VERSION="dev" #This is automatically replaced with tag name in travis
 #####################
 
@@ -78,17 +78,20 @@ function assemble {
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
     checkErrors
-    
-    clr_green "Build Python release..."
     cd ..
-    cd python
+     
+    clr_green "Build Python release..." 
+    mv python $NAME-tmp
+    mkdir python
+    mv $NAME-tmp python/$NAME
+    cd python    
     cmd="`which zip` ../release/$NAME-$VERSION-python.zip -r *"
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
     checkErrors
-    
-    clr_green "Build Java source release..."
     cd ..
+    
+    clr_green "Build Java source release..."    
     cmd="`which jar` cf release/$NAME-$VERSION-sources.jar -C java ."
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
@@ -122,7 +125,7 @@ function deployToRemote {
     do
         target_dir=${GROUP//./\/}
         curl -X PUT  -T  $f -u$BINTRAY_USER:$BINTRAY_API_KEY\
-            "https://api.bintray.com/content/riccardo/f3d/f3d/$VERSION/$target_dir/$VERSION/"
+            "https://api.bintray.com/content/riccardo/f3b/f3b/$VERSION/$target_dir/$VERSION/"
     done
 }
 

@@ -1,4 +1,4 @@
-package f3d;
+package f3b;
 import public "primitives.proto";
 
 /// the direction of the light need by directional and spot is Z (forward like regular Node).

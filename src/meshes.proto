@@ -1,4 +1,4 @@
-package f3d;
+package f3b;
 // deprecated
 // message Geometry {
 //   ///@check identifier (id) should be unique and invariant over a set of datas (eg: use uuid) and over time.

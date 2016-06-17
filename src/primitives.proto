@@ -1,4 +1,4 @@
-package f3d;
+package f3b;
 message Vec2 {
   required float x = 1;
   required float y = 2;
