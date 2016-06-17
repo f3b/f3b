@@ -126,6 +126,8 @@ function deployToRemote {
         target_dir=${GROUP//./\/}
         curl -X PUT  -T  $f -u$BINTRAY_USER:$BINTRAY_API_KEY\
             "https://api.bintray.com/content/riccardo/f3b/f3b/$VERSION/$target_dir/$VERSION/"
+        curl -X PUT  -T  $f -u$BINTRAY_USER:$BINTRAY_API_KEY\
+            "https://api.bintray.com/content/riccardo/f3b/f3b/latest/$target_dir/latest/"
     done
 }
 
