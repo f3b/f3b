@@ -123,7 +123,7 @@ function deployToRemote {
     do
         target_dir=${GROUP//./\/}
         curl -X PUT  -T  $f -u$BINTRAY_USER:$BINTRAY_API_KEY\
-            "https://api.bintray.com/content/riccardo/f3b/f3b/$VERSION/$target_dir/$f?publish=1&override=1"
+            "https://api.bintray.com/content/riccardo/f3b/f3b/$VERSION/$target_dir/$NAME/$VERSION/$f?publish=1&override=1"
     done
     cd ../../
     echo $VERSION > build/tmp/version.txt
