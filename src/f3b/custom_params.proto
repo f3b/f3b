@@ -20,7 +20,6 @@ message CustomParam {
     Vec4 vvec4 = 12;
     Quaternion vquat = 13;
     Mat4 vmat4 = 14;
-    Texture vtexture = 15;
     Color vcolor = 16;
   }
 }
