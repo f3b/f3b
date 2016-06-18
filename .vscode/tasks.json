@@ -1,7 +1,19 @@
+
 {
-	"version": "0.1.0",
-	"command": "bash",
-    "isShellCommand": true,
-	"showOutput": "always",
-	"args": ["make.sh","compileAndDeployToLocal"]
+     "version": "0.1.0",
+     "command": "bash",
+     "isShellCommand": true,
+     "showOutput": "always",
+     "args": ["./make.sh"],
+     "tasks":[
+        {
+            "taskName":"compileAndDeployToLocal",
+            "args": [],
+            "isBuildCommand": true
+        },
+        {
+            "taskName":"clean",
+            "args": []
+        }
+    ]
 }
