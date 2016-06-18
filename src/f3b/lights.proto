@@ -1,5 +1,5 @@
 package f3b;
-import public "primitives.proto";
+import public "f3b/primitives.proto";
 
 /// the direction of the light need by directional and spot is Z (forward like regular Node).
 /// To use an other direction add relation to a Node and change the rotation of the Node (idem for translation).

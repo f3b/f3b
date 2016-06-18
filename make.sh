@@ -57,7 +57,7 @@ function compile {
     mkdir -p build/java
     mkdir -p build/python
     clr_green "Compile protocol..."
-    build/protoc --cpp_out=build/cpp --python_out=build/python --java_out=build/java --proto_path=src  src/*.proto
+    build/protoc --cpp_out=build/cpp --python_out=build/python --java_out=build/java --proto_path=src  src/f3b/*.proto
     checkErrors
 }
 
@@ -81,11 +81,8 @@ function assemble {
     cd ..
      
     clr_green "Build Python release..." 
-    mv python $NAME-tmp
-    mkdir python
-    mv $NAME-tmp python/$NAME
     cd python    
-    cmd="`which zip` ../release/$NAME-$VERSION-python.zip -r *"
+    cmd="`which zip` -0 ../release/$NAME-$VERSION-python.zip -r *"
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
     checkErrors

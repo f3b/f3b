@@ -1,7 +1,7 @@
 package f3b;
 //option optimize_for = LITE_RUNTIME;
 
-import public "primitives.proto";
+import public "f3b/primitives.proto";
 
 message CustomParamList {
   required string id = 1;

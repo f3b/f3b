@@ -1,5 +1,5 @@
 package f3b;
-import public "primitives.proto";
+import public "f3b/primitives.proto";
 
 message TObject {
   ///@check identifier (id) should be unique and invariant over a set of datas (eg: use uuid) and over time.
