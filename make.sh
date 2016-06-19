@@ -114,7 +114,7 @@ function deployToLocal {
     target_dir="$HOME/.m2/repository/"${GROUP//./\/}"/$NAME/$VERSION/"
     mkdir -p $target_dir
     clr_green "Copy build/release/$NAME-$VERSION*  in $target_dir"
-    cp build/release/$NAME-$VERSION* $target_dir
+    cp -Rf build/release/$NAME-$VERSION* $target_dir
 }
 
 function deployToRemote {
