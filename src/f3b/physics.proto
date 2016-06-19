@@ -1,5 +1,5 @@
 package f3b;
-import public "f3b/primitives.proto";
+import public "f3b/types.proto";
 
 message PhysicsData {
 
@@ -26,12 +26,12 @@ message Constraint {
 }
 
 message ConstraintGeneric {
-    required Vec3 pivotA = 1;
-    required Vec3 pivotB = 2;
-    required Vec3 upperLinearLimit = 3;
-    required Vec3 lowerLinearLimit = 4;
-    required Vec3 upperAngularLimit = 5;
-    required Vec3 lowerAngularLimit = 6;
+    required vec3 pivotA = 1;
+    required vec3 pivotB = 2;
+    required vec3 upperLinearLimit = 3;
+    required vec3 lowerLinearLimit = 4;
+    required vec3 upperAngularLimit = 5;
+    required vec3 lowerAngularLimit = 6;
     required bool disable_collisions = 7;
 
 }
@@ -54,8 +54,8 @@ message RigidBody {
     optional float linearDamping = 7 [ default = 0 ];
     optional float margin = 8 [ default = 0 ];
     optional float restitution = 9 [ default = 0 ];
-    optional Vec3 angularFactor = 10;
-    optional Vec3 linearFactor = 11; 
+    optional vec3 angularFactor = 10;
+    optional vec3 linearFactor = 11; 
     optional bool isKinematic = 12 [ default=false ];
     optional int32 collisionGroup = 13 [ default = 1 ];
     optional int32 collisionMask = 14 [ default = 1 ];

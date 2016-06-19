@@ -1,7 +1,7 @@
 package f3b;
 //option optimize_for = LITE_RUNTIME;
 
-import public "f3b/primitives.proto";
+import public "f3b/types.proto";
 
 message CustomParamList {
   required string id = 1;
@@ -15,11 +15,9 @@ message CustomParam {
     string vstring = 3;
     float vfloat = 4;
     int32 vint = 5;
-    Vec2 vvec2 = 10;
-    Vec3 vvec3 = 11;
-    Vec4 vvec4 = 12;
-    Quaternion vquat = 13;
-    Mat4 vmat4 = 14;
-    Color vcolor = 16;
+    vec2 vvec2 = 10;
+    vec3 vvec3 = 11;
+    vec4 vvec4 = 12;
+    qtr vqtr = 13;
   }
 }

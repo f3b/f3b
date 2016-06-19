@@ -1,12 +1,18 @@
 package f3b;
-import public "f3b/primitives.proto";
+import public "f3b/types.proto";
 message MatProperty{
   required string id = 1;
-  optional Color color = 2; 
-  optional Texture texture = 3; 
-  optional double value = 4;
-  optional Vec2 vec2 = 5;
-  optional Vec3 vec3 = 6;
+  oneof value {
+    tx2d texture = 3; 
+    float vfloat = 4;
+    int32 vint = 7;
+    bool vbool = 9;
+    vec2 vvec2 = 5;
+    vec3 vvec3 = 6;  
+    vec4 vvec4 = 8;  
+    vec4 vcolor = 11;  
+    qtr vqtr = 10;  
+  }
 }
 
 message Material {

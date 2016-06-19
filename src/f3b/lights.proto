@@ -1,5 +1,5 @@
 package f3b;
-import public "f3b/primitives.proto";
+import public "f3b/types.proto";
 
 /// the direction of the light need by directional and spot is Z (forward like regular Node).
 /// To use an other direction add relation to a Node and change the rotation of the Node (idem for translation).
@@ -13,7 +13,7 @@ message Light {
   ///@check identifier (id) should be unique and invariant over a set of datas (eg: use uuid) and over time.
   required string id = 1;
   optional Kind kind = 2 [default = directional];
-  optional Color color = 3;
+  optional vec4 color = 3;
   optional float intensity = 4 [default = 1.0];
   optional bool cast_shadow = 5 [default = false];
   /// attenuation from the radial distance of light source (for spot and point)
