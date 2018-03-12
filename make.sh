@@ -3,7 +3,10 @@
 ### Configuration ###
 GROUP="wf.frk.f3b"
 NAME="f3b"
-VERSION="dev" #This is automatically replaced with tag name in travis
+if [ "$VERSION" = "" ];
+then
+    VERSION="dev" #This is automatically replaced with tag name in travis
+fi
 #####################
 
 rm -Rf build/tmp
@@ -46,6 +49,8 @@ function compile {
         fi
         checkErrors
         cp src/protoc ../../../
+        cp -Rf src/.libs ../../../
+
         cd ../../../
         chmod +x protoc
         cd ..
@@ -57,6 +62,7 @@ function compile {
     mkdir -p build/java
     mkdir -p build/python
     clr_green "Compile protocol..."
+    export LD_LIBRARY_PATH=build/.libs/
     build/protoc --cpp_out=build/cpp --python_out=build/python --java_out=build/java --proto_path=src  src/f3b/*.proto
     checkErrors
 }
@@ -70,6 +76,7 @@ function assemble {
         wget -q "http://central.maven.org/maven2/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1.jar" -O build/protobuf.jar
         checkErrors
     fi 
+    rm -Rf build/release
     mkdir -p build/release
 
     clr_green "Build C++ source release..."
@@ -131,6 +138,33 @@ function deployToRemote {
            "https://api.bintray.com/content/riccardo/f3b/f3b/latest/$target_dir/version.txt?publish=1&override=1"
 
 }
+
+function deployToMinio {
+    cd build/release
+    for f in *
+    do
+        target_dir=${GROUP//./\/}
+       mc  cp $f $2/$target_dir/$NAME/$VERSION/$f
+    done
+    cd ../../
+    echo $VERSION > build/tmp/version.txt
+    mc  cp  build/tmp/version.txt $2/$target_dir/version.txt
+}
+
+
+
+
+
+function jenkins {
+    compile "linux"
+    assemble
+     if [ "$1" = "minio" ];
+    then
+        deployToMinio $@
+    fi
+}
+
+
 
 function travis {
     DEPLOY="false"
