@@ -12,6 +12,7 @@ import public "f3b/tobjects.proto";
 import public "f3b/animations_kf.proto";
 import public "f3b/custom_params.proto";
 import public "f3b/physics.proto";
+import public "f3b/audio.proto";
 
 message Data {
   /// version of the protocol / data format. readonly !! (== the major of the f3b project version)
@@ -27,6 +28,7 @@ message Data {
   repeated CustomParamList custom_params = 9;
   repeated AnimationKF animations_kf = 10;
   repeated PhysicsData physics = 11;
+  repeated Speaker speakers = 12;
 
   /// reserved for application specific data, no requirement to be managed by others application.
   /// eg: custom primitive properties, node material, particle, internal/private data to allow save/load
