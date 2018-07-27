@@ -1,21 +1,21 @@
 package f3b;
 
 message vec2 {
-  required float x = 1;
-  required float y = 2;
+  required float x = 1 [default=0.0];
+  required float y = 2 [default=0.0];
 }
 
 message vec3 {
-  required float x = 1;
-  required float y = 2;
-  required float z = 3;
+  required float x = 1 [default=0.0];
+  required float y = 2 [default=0.0];
+  required float z = 3 [default=0.0];
 }
 
 message vec4 {
-  required float x = 1;
-  required float y = 2;
-  required float z = 3;
-  required float w = 4;
+  required float x = 1 [default=0.0];
+  required float y = 2 [default=0.0];
+  required float z = 3 [default=0.0];
+  required float w = 4 [default=0.0];
 }
 
 message tx2d {
@@ -25,10 +25,10 @@ message tx2d {
 
 // Quaternion should be normalized
 message qtr {
-  required float x = 1;
-  required float y = 2;
-  required float z = 3;
-  required float w = 4;
+  required float x = 1 [default=0.0];
+  required float y = 2 [default=0.0];
+  required float z = 3 [default=0.0];
+  required float w = 4 [default=1.0];
 }
 
 
