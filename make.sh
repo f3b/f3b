@@ -5,7 +5,7 @@ GROUP="wf.frk.f3b"
 NAME="f3b"
 if [ "$VERSION" = "" ];
 then
-    VERSION="dev" #This is automatically replaced with tag name in travis
+    VERSION="-SNAPSHOT" #This is automatically replaced with tag name in travis
 fi
 #####################
 
@@ -62,9 +62,45 @@ function compile {
     mkdir -p build/java
     mkdir -p build/python
     clr_green "Compile protocol..."
-    export LD_LIBRARY_PATH=build/.libs/
-    build/protoc --cpp_out=build/cpp --python_out=build/python --java_out=build/java --proto_path=src  src/f3b/*.proto
+    rm -Rf build/src
+    cp -Rf src build/
+    cd build
+    export LD_LIBRARY_PATH=./.libs/
+
+    extensions=$2
+    if [ "$extensions" != "" ];
+    then
+        oifs=$IFS
+        IFS=","
+        for ext in "$extensions"
+        do
+            echo "Build extension $ext"
+            source src/$ext/extension.sh
+            dest="src/f3b/datas.proto"
+            head -n 1 $dest > tmp.f
+            echo "$EXT_IMPORTS" >> tmp.f
+            tail -n +2  "$dest" >> tmp.f
+            mv tmp.f "$dest"
+
+            head -n -1  "$dest" > tmp.f
+            echo "$EXT_DATA" >> tmp.f
+            tail -n 1 src/f3b/datas.proto >>tmp.f
+            mv tmp.f "$dest"
+
+            # for extf in src/$ext/*.extension; do
+            #     n=$(basename -- "$extf")
+            #     n="${n%.*}"
+            #     echo "Extend $n.proto with $extf"
+            #     cat $extf >> src/f3b/$n.proto
+            # done
+           ./protoc --cpp_out=./cpp --python_out=./python --java_out=./java --proto_path=src  src/$ext/*.proto
+        done
+        IFS=$oifs
+    fi
+    echo "Generate protobuf src"
+    ./protoc --cpp_out=./cpp --python_out=./python --java_out=./java --proto_path=src  src/f3b/*.proto
     checkErrors
+    cd ..
 }
 
 function clean {
@@ -81,6 +117,8 @@ function assemble {
 
     clr_green "Build C++ source release..."
     cd build/cpp
+        echo $PWD
+
     cmd="`which zip` ../release/$NAME-$VERSION-cpp.zip -r *"
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
@@ -156,7 +194,7 @@ function deployToMinio {
 
 
 function jenkins {
-    compile "linux"
+    compile "linux" "cr_ext"
     assemble
      if [ "$1" = "minio" ];
     then
@@ -175,7 +213,7 @@ function travis {
         VERSION=$TRAVIS_TAG
         DEPLOY="true"    
     fi
-    compile $TRAVIS_OS_NAME
+    compile $TRAVIS_OS_NAME "cr_ext"
     assemble
     if [ "$DEPLOY" != "true" ];
     then
@@ -185,21 +223,22 @@ function travis {
 }
 
 function compileAndDeployToLocal {
-    compile
-    assemble
-    deployToLocal
+    compile $@
+    assemble $@
+    deployToLocal $@
 }
 
 function compileAndDeployToRemote {
-    compile
-    assemble
-    deployToRemote
+    compile  $@ 
+    assemble $@
+    deployToRemote $@
 }
 
 if [ "$1" = "" ];
 then
-    echo "Usage: make.sh target"
+    echo "Usage: make.sh target [OS] [EXTENSIONS CSV]"
     echo " - Targets: clean,compile,assemble,deployToLocal,deployToRemote,travis,compileAndDeployToLocal,compileAndDeployToRemote"
+    echo " - Example: ./make.sh compile linux ext1,ext2,ext3"
     exit 0
 fi
 clr_magenta "Run $1..."

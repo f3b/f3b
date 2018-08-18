@@ -1,0 +1,103 @@
+package f3b;
+import public "f3b/types.proto";
+import public "cr_ext/CRForcefield.proto";
+import public "f3b/meshes.proto";
+import public "f3b/materials.proto";
+
+message CRParticleEmitter {
+
+    enum EmitFrom {
+        emit_from_verts = 1;
+        emit_from_faces = 2;
+        emit_from_volume = 3;
+        
+    }
+
+
+    message Velocity{
+        optional float normal_factor=1 [default=0.0];
+        optional float tangent_factor=2 [default=0.0];
+        optional float tangent_phase=3 [default=0.0];
+        optional vec3 object_align_factor=4;
+        optional float object_factor=5;
+        optional float variation=6 [default=0.0];
+    }
+
+    // enum Axis{
+    //     random=0;
+    //     globalx=1;
+    //     globaly=2;
+    //     globalz=3;
+    //     vertical=4;
+    //     horizontal=5;
+    //     velocity=6;
+    //     none=8;
+    //     objectx=9;
+    //     objecty=10;
+    //     objectz=11;
+    //     normal=12;
+    //     normaltangent=13;
+    // }
+
+    // Blender has very complex rotation settings, only random
+    // rotation and angular velocity will be supported for now
+    message Rotation{
+        // optional Axis initial_orientation_mode;
+        // optional float initial_orientation_randomness=2 [default=0.0];
+        // optional float initial_orientation_phase=3 [default=0.0];
+        // optional float initial_orientation_phase_randomness=4 [default=0.0];
+        // optional Axis angular_velocity_axis=4;
+        optional float velocity=6 [default =0.0];
+        // oprional bool dynamic_angular_velocity=7;
+        optional float random_factor=22 [ default=0.0];
+        
+    }
+
+    message NewtonianInfluencer{
+        optional float brownian=1 [default=0.0];
+        optional float drag=2 [default=0.0];
+        optional float damp=3 [default=0.0];
+        optional bool die_on_hit=5 ;
+    }
+
+    message ObjectRenderer {
+        optional float size=1 [default=1.0];
+        optional float size_variation=2[default=1.0];
+
+    }
+
+    message BillboardRenderer {
+        optional float size=1[default=1.0];
+        optional float size_variation=2[default=1.0];
+
+    }
+
+    required string id = 1;
+    required string name=2;
+
+    optional uint32 particles_per_emission= 6 [default=100];
+    optional float min_life = 7 [default=0.3];
+    optional float max_life = 8 [default=1.0];   
+    optional EmitFrom emit_from=9;
+    optional Velocity velocity=10;
+    optional float timestep=11 [default=1.0];
+
+    oneof  influencer {
+        NewtonianInfluencer newtonian_influencer=20;
+    }
+
+    oneof renderer {
+        ObjectRenderer object_renderer=30;
+        BillboardRenderer billboard_renderer=31;        
+    }
+
+
+    optional Rotation rotation=40;
+    optional CRForceFieldsInfluence forcefields_influence=41; 
+
+    repeated Mesh meshes=42;
+    repeated Material materials=43;
+    optional float emission_delay=44[default=0.0];
+    optional float emission_duration=45[default=1.0];
+
+}   

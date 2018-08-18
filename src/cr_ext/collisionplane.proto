@@ -1,0 +1,17 @@
+package f3b;
+import public "f3b/types.proto";
+
+message CRCollisionPlane {
+    required string id=1;
+    optional string name=2;
+    required vec3 point=3;
+    required vec3 normal=4;
+    optional vec3 extents=5;
+    optional float damping=6[default=0.0];
+    optional float damping_randomness=7[default=0.0];
+    optional float friction=8[default=0.0];
+    optional float friction_randomness=9[default=0.0];
+    optional float stickiness=10[default=0.0];
+    optional float permeability=11[default=0.0];
+    optional bool kill_particles=12;
+}

@@ -1,0 +1,24 @@
+package f3b;
+import public "f3b/types.proto";
+
+
+message CRForceFieldsInfluence {
+    oneof influence {
+        float gravity = 1 [default =1.0];
+        float force = 2 [default =1.0];
+    }
+}
+
+message CRForceField {
+    required string id =1;
+    message Gravity{
+        optional vec3 strength=1;
+    }
+    message Force{
+        optional float strength=1 [default=0];
+    }
+    oneof type {
+        Gravity gravity=10;
+        Force force=11;
+    }   
+}
