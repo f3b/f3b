@@ -147,11 +147,31 @@ function assemble {
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd  
     checkErrors      
+
     find tmp/java_build -type f -name '*.java'  -delete
     cmd="`which jar` cf release/$NAME-$VERSION.jar -C tmp/java_build ."
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
     checkErrors
+
+
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<project
+  xmlns=\"http://maven.apache.org/POM/4.0.0\"
+  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">
+
+  <modelVersion>4.0.0</modelVersion>
+      <groupId>$GROUP</groupId>
+    <artifactId>$NAME</artifactId>
+    <version>$VERSION</version>
+
+  <name>$NAME</name>
+  <description></description>
+  <url></url>
+</project>" > release/$NAME-$VERSION.pom
+    checkErrors
+
     cd ..
 }
 
@@ -241,6 +261,6 @@ then
     echo " - Example: ./make.sh compile linux ext1,ext2,ext3"
     exit 0
 fi
-clr_magenta "Run $1..."
-$1 ${*:2}
+echo "Run $@"
+$@
 clr_magenta "+ Done!"
