@@ -11,4 +11,7 @@ message Relation {
   required string ref2 = 2;
   /// mainly for description but often useless
   optional string label = 3;
+  // external reference
+  optional bool extRef2 = 4;
+
 }
