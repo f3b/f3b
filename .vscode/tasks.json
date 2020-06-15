@@ -5,10 +5,15 @@
      "isShellCommand": true,
      "showOutput": "always",
      "args": ["./make.sh"],
+     "options": {
+         "env": {
+             "VERSION":"0.4"
+         }
+     },
      "tasks":[
         {
             "taskName":"compileAndDeployToLocal",
-            "args": [],
+            "args": ["linux","cr_ext"],
             "isBuildCommand": true
         },
         {
