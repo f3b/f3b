@@ -15,10 +15,20 @@ message MatProperty{
   }
 }
 
+
+
 message Material {
+  enum Blending {
+    opaque =1;
+    alpha_clip=2;
+    alpha_blend=3;
+    alpha_dithering=4;    
+  }
   ///@check identifier (id) should be unique and invariant over a set of datas (eg: use uuid) and over time.
   required string id = 1;
   optional string mat_id = 3;
   optional string name = 4;
   repeated MatProperty properties = 5;
+  optional bool backfaceCulling = 6;
+  optional Blending blendMode = 7;
 }
