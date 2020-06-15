@@ -1,5 +1,5 @@
 #/bin/bash
-
+set -e 
 ### Configuration ###
 GROUP="wf.frk.f3b"
 NAME="f3b"
@@ -18,13 +18,6 @@ then
 fi
 source build/bash_colors.sh
 
-function checkErrors {
-    if [ $? -ne 0 ]; then 
-        clr_red "Build failed."
-        exit 1; 
-    fi
-}
-
 
 
 function compile {
@@ -33,21 +26,17 @@ function compile {
         mkdir -p build/tmp/protobuf
         cd build/tmp/protobuf
         wget -q "https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.gz" -O protobuf.tar.gz
-        checkErrors
         tar -xzf protobuf.tar.gz
         rm -Rf protobuf.tar.gz
         cd *
         clr_green "Compile protoc..."
         if [ "$1" = "osx" ]; then
             ./configure CC=clang CXX=clang++ CXXFLAGS='-std=c++11 -stdlib=libc++ -O3 -g' LDFLAGS='-stdlib=libc++' LIBS="-lc++ -lc++abi"
-            checkErrors
             make -j 4 
         else
             ./configure          
-            checkErrors
             make -j 4 
         fi
-        checkErrors
         cp src/protoc ../../../
         cp -Rf src/.libs ../../../
 
@@ -99,7 +88,6 @@ function compile {
     fi
     echo "Generate protobuf src"
     ./protoc --cpp_out=./cpp --python_out=./python --java_out=./java --proto_path=src  src/f3b/*.proto
-    checkErrors
     cd ..
 }
 
@@ -109,11 +97,11 @@ function clean {
 function assemble {
     if [ ! -f build/protobuf.jar ]; then
         clr_green "Download protobuf runtime for java..."
-        wget -q "http://central.maven.org/maven2/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1.jar" -O build/protobuf.jar
-        checkErrors
+        wget -q "https://repo1.maven.org/maven2/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1.jar" -O build/protobuf.jar
+        echo "Downloaded"
     fi 
-    rm -Rf build/release
-    mkdir -p build/release
+    rm -Rf build/release || true
+    mkdir -p build/release 
 
     clr_green "Build C++ source release..."
     cd build/cpp
@@ -122,7 +110,6 @@ function assemble {
     cmd="`which zip` ../release/$NAME-$VERSION-cpp.zip -r *"
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
-    checkErrors
     cd ..
      
     clr_green "Build Python release..." 
@@ -130,14 +117,12 @@ function assemble {
     cmd="`which zip` -0 ../release/$NAME-$VERSION-python.zip -r *"
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
-    checkErrors
     cd ..
     
     clr_green "Build Java source release..."    
     cmd="`which jar` cf release/$NAME-$VERSION-sources.jar -C java ."
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
-    checkErrors
     
     clr_green "Build Java binary release..."
     mkdir -p tmp/java_build
@@ -146,13 +131,11 @@ function assemble {
     cmd="`which javac` -source 1.7 -target 1.7 -Xlint:none -cp protobuf.jar @java-src.txt"
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd  
-    checkErrors      
 
     find tmp/java_build -type f -name '*.java'  -delete
     cmd="`which jar` cf release/$NAME-$VERSION.jar -C tmp/java_build ."
     clr_escape "$(echo $cmd)" $CLR_BOLD $CLR_BLUE
     $cmd
-    checkErrors
 
 
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -170,7 +153,6 @@ function assemble {
   <description></description>
   <url></url>
 </project>" > release/$NAME-$VERSION.pom
-    checkErrors
 
     cd ..
 }
